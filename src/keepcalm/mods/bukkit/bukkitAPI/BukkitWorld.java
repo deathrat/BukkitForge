@@ -335,7 +335,8 @@ public class BukkitWorld implements World {
 	public boolean regenerateChunk(int x, int z) {
 		System.out.println("Regen chunk: " + x + ", " + z);
 		net.minecraft.world.chunk.Chunk oldChunk = getHandle().getChunkFromBlockCoords(x, z);
-		List blockListOfChunk = new ArrayList();
+
+		List<Integer[]> blockListOfChunk = new ArrayList<Integer[]>();
 		// x
 		for (int i = 0; i < 16; i++) {
 			// y
@@ -364,6 +365,7 @@ public class BukkitWorld implements World {
 
 		//blockListOfChunk = (List) chunkMap.get(oldChunk);
 		//Replace only the blocks wanted from new chunk
+		@SuppressWarnings("rawtypes")
 		Iterator j = blockListOfChunk.iterator();
 		while(j.hasNext())
 		{
@@ -640,7 +642,8 @@ public class BukkitWorld implements World {
 	}
 
 	public boolean createExplosion(double x, double y, double z, float power, boolean setFire) {
-		Explosion boom = world.createExplosion(null, x, y, z, power, setFire);
+		//Explosion boom = 
+				world.createExplosion(null, x, y, z, power, setFire);
 		return true;
 
 
@@ -1245,10 +1248,10 @@ public class BukkitWorld implements World {
 		 }
 
 		 final BukkitWorld other = (BukkitWorld) obj;
-		 
+		 return other.hashCode() == this.hashCode();
 		// return other.getHandle().getWorldInfo().getDimension() == world.getWorldInfo().getDimension() ||
 			//	 other.getHandle().equals(this.getHandle());
-		 return other.getName().equals(getName()) && other.getWorldFolder().equals(getWorldFolder());
+		// return other.getName().equals(getName()) && other.getWorldFolder().equals(getWorldFolder());
 		 //return this.getHandle().getWorldInfo().getDimension() == other.getHandle().getWorldInfo().getDimension();
 	 }
 

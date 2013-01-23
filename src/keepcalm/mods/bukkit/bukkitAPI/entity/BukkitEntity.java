@@ -71,6 +71,7 @@ import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.network.packet.Packet61DoorChange;
+import net.minecraft.world.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
@@ -254,7 +255,8 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
     }
 
     public boolean teleport(Location location, TeleportCause cause) {
-        entity.worldObj = ((BukkitWorld) location.getWorld()).getHandle();
+    	if (!location.getWorld().equals(getWorld()))
+    	server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((BukkitWorld)location.getWorld()).getHandle());
         entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         // entity.setLocation() throws no event, and so cannot be cancelled
         return true;
@@ -274,7 +276,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(notchEntityList.size());
 
         for (Entity e : notchEntityList) {
-            bukkitEntityList.add(this.getEntity(this.server, e));
+            bukkitEntityList.add(BukkitEntity.getEntity(this.server, e));
         }
         return bukkitEntityList;
     }
@@ -324,7 +326,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         	return null;
         }
         else {
-        	return this.getEntity(this.server, getHandle().ridingEntity);
+        	return BukkitEntity.getEntity(this.server, getHandle().ridingEntity);
         }
     }
 
@@ -456,7 +458,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         if (getHandle().ridingEntity == null || !(getHandle().ridingEntity instanceof EntityMinecart)) {
             return null;
         }
-        BukkitEntity j = this.getEntity(this.server, getHandle().ridingEntity);
+        BukkitEntity j = BukkitEntity.getEntity(this.server, getHandle().ridingEntity);
         return j;
     }
 
