@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.turtleIntegration;
+package keepcalm.mods.bukkit.modIntegration.computercraft;
 
 import java.util.HashMap;
 
@@ -23,6 +23,19 @@ public class ComputercraftHelper {
 
 	public static HashMap<Integer, String> owners = new HashMap<Integer, String>();
 	
+	/**
+	 * Calls appropriate events for turtles breaking blocks.
+	 * The turtle behaves as though its owner broke the block.
+	 * 
+	 * @param ev
+	 * @param turtleX
+	 * @param turtleY
+	 * @param turtleZ
+	 * @param turtle
+	 * @return -1 for invalid, 0 for uncancelled, 1 for cancelled.
+	 * @throws ClassNotFoundException - if CC is not installed
+	 * @throws Exception - if an error occured during ID retrieval.
+	 */
 	public static int handleTurtleBreakEvent(BlockDestroyEvent ev, int turtleX, int turtleY, int turtleZ, IPeripheral turtle) throws ClassNotFoundException, Exception {
 		if (turtle.callMethod(null, 3, null) == null || !turtle.getClass().isAssignableFrom(Class.forName("dan200.turtle.shared.TileEntityTurtle"))) {
 			return -1;
