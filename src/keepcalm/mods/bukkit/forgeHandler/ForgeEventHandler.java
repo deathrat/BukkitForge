@@ -111,6 +111,7 @@ import org.bukkit.util.Vector;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import dan200.computer.api.IPeripheral;
 /**
  * 
  * @author keepcalm
@@ -641,9 +642,20 @@ public class ForgeEventHandler {
 	public void blockBreakSomehow(BlockDestroyEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			int x = ev.x + dir.offsetX;
+			int y = ev.y + dir.offsetY;
+			int z = ev.z + dir.offsetZ;
+			if (ev.world.blockHasTileEntity(x, y, z) && ev.world.getBlockTileEntity(x, y, z) instanceof IPeripheral) {
+				// OMG it's a turtle
+			}
+			
+		}
 		BlockBreakEvent bev = new BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), BukkitPlayerCache.getBukkitPlayer(BukkitContainer.MOD_PLAYER));
 		Bukkit.getPluginManager().callEvent(bev);
-
+		
+		
+		
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
 		}
