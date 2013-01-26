@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.modIntegration.computercraft;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -53,8 +54,10 @@ public class ComputercraftHelper {
 			}
 			else {
 				player = MinecraftServer.getServer().getConfigurationManager().createPlayerForUser(owners.get(id));
+				// so PEX can load perms
 				PlayerJoinEvent bev = new PlayerJoinEvent(BukkitPlayerCache.getBukkitPlayer(player), player.username + " joined the game");
 				
+				Bukkit.getPluginManager().callEvent(bev);
 			}
 		}
 		
